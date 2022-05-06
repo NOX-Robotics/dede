@@ -7,17 +7,20 @@ from launch.conditions import IfCondition
 from launch_ros.actions import Node
 
 def generate_launch_description():
+    # Configuration paths
     mapping_config_file = os.path.join(get_package_share_directory('dede'), 'config', 'slam', 'mapping.yaml')
 
+    # Parameters setup
     use_sim_time = LaunchConfiguration('use_sim_time')
     use_sim_time_arg = DeclareLaunchArgument('use_sim_time', default_value='true', description="Use Gazebo time")
     use_map_resume = LaunchConfiguration('use_map_file')
-    use_map_resume_arg = DeclareLaunchArgument('use_map_file', default_value='False', description="Resume from existig map?")
+    use_map_resume_arg = DeclareLaunchArgument('use_map_file', default_value='False', description="Resume from existing map?")
     param_map_path = LaunchConfiguration('map_file')
     param_map_path_arg = DeclareLaunchArgument('map_file', default_value='', description="Map file path for continuation")
     param_map_pose = LaunchConfiguration('map_pose')
     param_map_pose_arg = DeclareLaunchArgument('map_pose', default_value="[0.0, 0.0, 0.0]", description="Map start pose")
 
+    # Nodes and flow control
     slam_node_default = GroupAction([ 
         Node(
             parameters=[
@@ -48,6 +51,7 @@ def generate_launch_description():
         condition=IfCondition(use_map_resume),
         scoped=False)
 
+    # Return object
     ld = LaunchDescription()
     ld.add_action(use_map_resume_arg)
     ld.add_action(param_map_pose_arg)

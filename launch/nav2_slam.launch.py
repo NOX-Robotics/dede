@@ -7,12 +7,15 @@ from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
+    # Configuration Paths
     nav2_configs = os.path.join(get_package_share_directory('dede'), 'config', 'nav2')
     slam_config = os.path.join(get_package_share_directory('dede'), 'config', 'slam', 'localization.yaml')
     nav2_bt_trees = os.path.join(get_package_share_directory("nav2_bt_navigator"), "behavior_trees")
 
+    # Node Lifecycle Order
     lifecycle_managed_nodes = ['controller_server','planner_server','recoveries_server', 'bt_navigator','waypoint_follower']
 
+    # Parameters Setup
     map_slam_file = LaunchConfiguration('map')
     map_slam_file_arg = DeclareLaunchArgument('map', description='Absolute path to the slam-toolbox map files')
     map_slam_pose = LaunchConfiguration('map_pose')
@@ -20,6 +23,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
     use_sim_time_arg = DeclareLaunchArgument('use_sim_time', default_value='True', description="Use Simulation clock?")
 
+    # Nodes
     slam_node = Node(
         parameters=[
             slam_config,
@@ -31,7 +35,6 @@ def generate_launch_description():
         executable='localization_slam_toolbox_node',
         name='slam_toolbox',
         output='screen')
-
     nav_group = GroupAction([
         Node(
             package='nav2_controller',
@@ -79,8 +82,6 @@ def generate_launch_description():
                 nav2_configs + "/waypoint.yaml",
                 {"use_sim_time": use_sim_time}])  
     ])
-
-    # Create lifecycle manager node 
     lifecycle_manager = Node(
         package='nav2_lifecycle_manager',
         executable='lifecycle_manager',
@@ -91,6 +92,7 @@ def generate_launch_description():
             {'autostart': True},
             {'node_names': lifecycle_managed_nodes}])
 
+    # Return setup
     ld = LaunchDescription()
     ld.add_action(map_slam_file_arg)
     ld.add_action(map_slam_pose_arg)
