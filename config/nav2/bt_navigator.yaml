@@ -1,5 +1,6 @@
 bt_navigator:
   ros__parameters:
+    enable_groot_monitoring: False
     global_frame: map
     robot_base_frame: base_link
     odom_topic: /odom

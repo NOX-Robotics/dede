@@ -18,7 +18,7 @@ controller_server:
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.05
-      yaw_goal_tolerance: 0.01
+      yaw_goal_tolerance: 0.5
       stateful: True
     # DWB parameters
     FollowPath:
@@ -45,7 +45,7 @@ controller_server:
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
-      xy_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.05
       trans_stopped_velocity: 0.25
       short_circuit_trajectory_evaluation: True
       stateful: True
@@ -69,6 +69,7 @@ local_costmap:
       robot_radius: 0.18
       transform_tolerance: 0.5
       global_frame: odom
+      map_topic: /map
       robot_base_frame: base_link
       rolling_window: true
       width: 20

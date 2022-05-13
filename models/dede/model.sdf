@@ -80,7 +80,7 @@
             </visual>
             <sensor name="rpi_a1" type="ray">
                 <always_on>true</always_on>
-                <visualize>true</visualize>
+                <visualize>false</visualize>
                 <pose>0 0 0.18 0 0 0</pose>
                 <update_rate>10</update_rate>
                 <ray>
@@ -297,7 +297,7 @@
         <plugin name="dede_diff_drive" filename="libgazebo_ros_diff_drive.so">
             <update_rate>50</update_rate>
             <ros>
-
+                <remapping>/tf:=tf</remapping>
             </ros>
             <left_joint>left_wheel_joint</left_joint>
             <right_joint>right_wheel_joint</right_joint>
